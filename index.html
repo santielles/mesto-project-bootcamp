@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<!-- Head -->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title lang="en">Mesto</title>
+  <link rel="stylesheet" href="./pages/index.css">
+</head>
+<!-- Body -->
+
+<body class="body">
+  <div class="page">
+    <section class="header" aria-label="Logo">
+      <img class="header__logo" src="./Images/logo.svg" alt="Логотип Mesto">
+    </section>
+    <!-- Main -->
+    <main class="main">
+      <!-- Profile -->
+      <section class="profile" aria-label="Profile">
+        <img class="profile__avatar" src="./Images/Cousteau_circle.png" alt="Аватар профайла">
+        <div class="profile__info">
+          <div class="profile__info-wrapped">
+            <h1 class="profile__name">Жак-Ив Кусто</h1>
+            <button class="profile__edit-button"></button>
+          </div>
+          <h2 class="profile__subtitle">Исследователь океана</h2>
+        </div>
+        <button class="profile__add-button"></button>
+      </section>
+      <!-- Elements -->
+      <section class="elements" aria-label="Gallery">
+        <div class="element">
+          <img class="element__image" src="./Images/Karachaevsk_small.png"
+            alt="Картинка заброшенной церкви в городе Карачаевск">
+          <div class="element__container">
+            <h3 class="element__title">Карачаевск</h3>
+            <button class="element__like element__like_mode_active"></button>
+          </div>
+        </div>
+
+        <div class="element">
+          <img class="element__image" src="./Images/GoraEl_small.png" alt="Картинка горы Эльбруса">
+          <div class="element__container">
+            <h3 class="element__title">Гора Эльбрус</h3>
+            <button class="element__like element__like_mode_active"></button>
+          </div>
+        </div>
+
+        <div class="element">
+          <img class="element__image" src="./Images/Dombai_small.png" alt="Картинка леса и гор В Домбай">
+          <div class="element__container">
+            <h3 class="element__title">Домбай</h3>
+            <button class="element__like element__like_mode_active"></button>
+          </div>
+        </div>
+
+        <div class="element">
+          <img class="element__image" src="./Images/GoraEl_small.png" alt="Картинка горы Эльбруса">
+          <div class="element__container">
+            <h3 class="element__title">Гора Эльбрус</h3>
+            <button class="element__like element__like_mode_active"></button>
+          </div>
+        </div>
+
+        <div class="element">
+          <img class="element__image" src="./Images/Dombai_small.png" alt="Картинка леса и гор В Домбай">
+          <div class="element__container">
+            <h3 class="element__title">Домбай</h3>
+            <button class="element__like element__like_mode_active"></button>
+          </div>
+        </div>
+
+        <div class="element">
+          <img class="element__image" src="./Images/Karachaevsk_small.png"
+            alt="Картинка заброшенной церкви в городе Карачаевск">
+          <div class="element__container">
+            <h3 class="element__title">Карачаево-Черкессия</h3>
+            <button class="element__like element__like_mode-active"></button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- Footer -->
+    <footer class="footer" aria-label="Footer">
+      <p class="footer__title">&copy; 2023 Elena Botkina</p>
+    </footer>
+    <!-- Popup -->
+    <div class="popup">
+      <div class="popup__container">
+        <button class="popup__close-button"></button>
+        <form class="popup__form">
+          <div class="popup__header">Редактировать профиль</div>
+          <div class="popup__section">Жак-Ив Кусто</div>
+          <div class="popup__section">Исследователь океана</div>
+          <button class="popup__button">Сохранить</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
