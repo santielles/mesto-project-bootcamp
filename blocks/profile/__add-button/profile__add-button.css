@@ -3,9 +3,11 @@
   width: 150px;
   height: 50px;
   background-image: url('../../../images/Add_Button.svg');
+  background-position: center;
   background-repeat: no-repeat;
   background-color: transparent;
-  border: none;
+  border: 2px solid #fff;
+  border-radius: 2px;
   cursor: pointer;
   align-self: center;
 }
@@ -18,11 +20,7 @@
 @media screen and (max-width: 660px) {
   .profile__add-button {
     margin: 0;
-    background-image: url('../../../images/Vector.svg');
-    background-size: 16px 16px;
-    background-position: center;
     width: 282px;
     height: 50px;
-    border: 2px solid #fff;
   }
 }
