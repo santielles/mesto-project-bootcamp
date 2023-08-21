@@ -1,17 +1,12 @@
 .header__logo {
   padding-bottom: 41px;
   width: 142px;
-  cursor: pointer;
+}
 
-}
 @media screen and (max-width: 660px) {
-    .header__logo {
-        margin: 0 auto 0 27px;
-        padding-bottom: 0;
-        width: 103px;
-      }
-}
-.header__logo:hover {
-  opacity: 0.6;
-  transition: 1s;
+  .header__logo {
+    margin: 0 auto 0 27px;
+    padding-bottom: 0;
+    width: 103px;
+  }
 }

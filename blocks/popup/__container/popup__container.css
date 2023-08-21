@@ -8,11 +8,11 @@
   border-radius: 10px;
   box-sizing: border-box;
 }
+
 @media (max-width: 660px) {
-    .popup__container {
-        padding: 25px 22px;
-        width: 282px;
-        max-width: 100%;
-        box-sizing: border-box;
-      }
+  .popup__container {
+    padding: 25px 22px;
+    width: 282px;
+    max-width: 100%;
+  }
 }
