@@ -6,14 +6,17 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  border: none;
   border-bottom: 1px solid rgba(0, 0, 0, .2);
   padding-bottom: 13px;
 }
+
 @media (max-width: 660px) {
-    .popup__section {
-        max-width: 238px;
-      }
+  .popup__section {
+    max-width: 238px;
+  }
 }
+
 .popup__section:last-of-type {
   margin-top: 30px;
 }
