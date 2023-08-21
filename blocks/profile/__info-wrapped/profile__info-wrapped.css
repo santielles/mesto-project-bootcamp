@@ -1,0 +1,10 @@
+.profile__info-wrapped {
+  display: flex;
+  align-items: baseline;
+  max-width: 100%;
+}
+@media screen and (max-width: 660px) {
+    .profile__info-wrapped {
+        justify-content: center;
+      }
+}
