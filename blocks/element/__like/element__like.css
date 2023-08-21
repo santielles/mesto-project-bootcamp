@@ -2,9 +2,8 @@
   width: 22px;
   height: 19px;
   cursor: pointer;
-  background: url('../../../images/Group.svg');
+  background: url('../../../images/Heart.svg');
   border: none;
-
 }
 
 .element__like:hover {
