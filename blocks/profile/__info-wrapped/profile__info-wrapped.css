@@ -1,7 +1,7 @@
 .profile__info-wrapped {
   display: flex;
   align-items: baseline;
-  max-width: 100%;
+  max-width: 336px;
 }
 
 @media screen and (max-width: 660px) {
