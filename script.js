@@ -1,8 +1,8 @@
-const deleteButtonsArray = document.querySelectorAll('.element__delete-button');
+const deleteButtonsArray = document.querySelectorAll('.card__delete-button');
 deleteButtonsArray.forEach(
   deleteButton => {
     deleteButton.addEventListener(
-      'click', () => deleteButton.closest('.element').remove()
+      'click', () => deleteButton.closest('.card').remove()
     );
   }
 );
