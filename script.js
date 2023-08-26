@@ -1,3 +1,45 @@
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
+
+const cards = document.querySelector('.cards');
+const template = document.getElementById('template');
+const templateCard = template.content.querySelector('.card');
+
+// Create new card
+initialCards.forEach(cardElement => {
+  const newCard = templateCard.cloneNode(true);
+  const cardImage = newCard.querySelector(".card__image");
+  const cardTitle = newCard.querySelector(".card__title");
+  cardImage.src = cardElement.link;
+  cardImage.alt = cardElement.name;
+  cardTitle.textContent = cardElement.name;
+  cards.prepend(newCard);
+});
+
 // Delete Card Button
 const deleteButtonsArray = document.querySelectorAll('.card__delete-button');
 deleteButtonsArray.forEach(
