@@ -34,11 +34,14 @@ const profileName = profile.querySelector('.profile__name')
 const profileAbout = profile.querySelector('.profile__about')
 // Ссылка на DOM элемент кнопки для редактирования профиля
 const editProfileButton = profile.querySelector('.profile__edit-button');
+// Ссылка на DOM элемент кнопки для добавления новой карточки
+const newCardButton = profile.querySelector('.profile__add-button');
+
 
 // Profile Popup
-// Ссылка на DOM элемент 'popup' редактирования профиля
-const profilePopup = document.querySelector('.popup');
-// Ссылка на DOM элемент кнопки закрытия 'popup' редактирования профиля
+// Ссылка на DOM элемент 'edit-profile-popup' редактирования профиля
+const profilePopup = document.getElementById('edit-profile-popup');
+// Ссылка на DOM элемент кнопки закрытия 'edit-profile-popup' редактирования профиля
 const closeProfileButton = profilePopup.querySelector('.popup__close-button');
 // Ссылка на DOM элемент формы редактирования профиля
 const profileEditForm = profilePopup.querySelector('.popup__form');
@@ -47,6 +50,17 @@ const profileEditName = document.getElementById('edit-profile-name');
 // Ссылка на DOM элемент поля редактирования описания в форме редактирования профиля
 const profileEditJob = document.getElementById('edit-profile-job');
 
+// New card Popup
+// Ссылка на DOM элемент 'new-card-popup' добавления новой карточки
+const newCardPopup = document.getElementById('new-card-popup');
+// Ссылка на DOM элемент кнопки закрытия 'new-card-popup' добавления новой карточки
+const closeNewCardPopupButton = newCardPopup.querySelector('.popup__close-button');
+// Ссылка на DOM элемент формы добавления новой карточки
+const newCardForm = newCardPopup.querySelector('.popup__form');
+// Ссылка на DOM элемент поля ввода названия в форме добавления новой карточки
+const newCardAddTitle = document.getElementById('add-title');
+// Ссылка на DOM элемент поля ввода ссылки в форме добавления новой карточки
+const newCardAddLink = document.getElementById('add-link');
 /*
 Эта функция закрывает (делает невидимым) переданный в неё 'popup', удаляя у него класс 'popup_opened'
 Параметр 'popup' - это ссылка на DOM элемент, представляющий собой 'popup'
@@ -89,6 +103,17 @@ editProfileButton.addEventListener('click', () => {
   openPopup(profilePopup);
 });
 
+// Добавляем обработчик события 'click' для кнопки добавления новой карточки
+newCardButton.addEventListener('click', () => {
+  // Открываем 'popup' добавления новой карточки
+  openPopup(newCardPopup);
+});
+
+closeNewCardPopupButton.addEventListener('click', () => {
+  // Закрывем 'popup' добавления новой карточки
+  closePopup(newCardPopup);
+});
+
 // Добавляем обработчик события 'submit' для формы редактирования профиля
 // При отправке формы будет вызвана функция handleProfileEditFormSubmit в которую как аргумент будет передано событие 'submit'
 profileEditForm.addEventListener('submit', (event) => handleProfileEditFormSubmit(event));
@@ -100,29 +125,44 @@ closeProfileButton.addEventListener('click', () => closePopup(profilePopup));
 const cards = document.querySelector('.cards');
 const template = document.getElementById('template');
 const templateCard = template.content.querySelector('.card');
-// Create new card
-initialCards.forEach(cardElement => {
+
+function creatNewCard(name, link) {
   const newCard = templateCard.cloneNode(true);
   const cardImage = newCard.querySelector(".card__image");
   const cardTitle = newCard.querySelector(".card__title");
-  cardImage.src = cardElement.link;
-  cardImage.alt = cardElement.name;
-  cardTitle.textContent = cardElement.name;
-  cards.prepend(newCard);
+  cardImage.src = link;
+  cardImage.alt = name;
+  cardTitle.textContent = name;
+
+  // Кнопка удаления карточки
+  const deleteButton = newCard.querySelector('.card__delete-button');
+  deleteButton.addEventListener('click', () => deleteButton.closest('.card').remove());
+
+  // Кнопка like
+  const likeButton = newCard.querySelector('.card__like');
+  likeButton.addEventListener('click', () => likeButton.classList.toggle('card__like_mode-active'));
+  return newCard;
+}
+
+// Create new card
+initialCards.forEach(cardElement => {
+  const newCard = creatNewCard(cardElement.name, cardElement.link);
+  addNewCard(newCard);
 });
 
-// Delete Card Button
-const deleteButtonsArray = document.querySelectorAll('.card__delete-button');
-deleteButtonsArray.forEach(
-  deleteButton => {
-    deleteButton.addEventListener('click', () => deleteButton.closest('.card').remove());
-  }
-);
+// Add new card
+function addNewCard(newCard) {
+  cards.prepend(newCard);
+}
 
-// Like Button
-const likeButtonArray = document.querySelectorAll('.card__like');
-likeButtonArray.forEach(
-  likeButton => {
-    likeButton.addEventListener('click', () => likeButton.classList.toggle('card__like_mode-active'));
-  }
-)
+function handleNewCardFormSubmit(event) {
+  // Отменяем стандартное действие браузера по отправке формы, чтобы предотвратить перезагрузку страницы
+  event.preventDefault();
+
+  const newCard = creatNewCard(newCardAddTitle.value, newCardAddLink.value);
+  addNewCard(newCard);
+  // Закрываем 'popup'
+  closePopup(newCardPopup);
+}
+
+newCardForm.addEventListener('submit', (event) => handleNewCardFormSubmit(event));
