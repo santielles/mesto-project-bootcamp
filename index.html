@@ -38,8 +38,8 @@
     <footer class="footer" aria-label="Footer">
       <p class="footer__title">&copy; 2023 Elena Botkina</p>
     </footer>
-    <!-- Popup -->
-    <div class="popup">
+    <!-- Popup edit profile-->
+    <div class="popup" id="edit-profile-popup">
       <div class="popup__container">
         <button type="button" class="popup__close-button"></button>
         <h2 class="popup__header">Редактировать профиль</h2>
@@ -50,8 +50,21 @@
         </form>
       </div>
     </div>
+    <!-- Popup new card-->
+    <div class="popup" id="new-card-popup">
+      <div class="popup__container">
+        <button type="button" class="popup__close-button"></button>
+        <h2 class="popup__header">Новое место</h2>
+        <form class="popup__form" name="popup-form">
+          <input class="popup__section" id='add-title' type="text" placeholder="Название" />
+          <input class="popup__section" id='add-link' type="url" placeholder="Ссылка на картинку" />
+          <button type="submit" class="popup__button">Создать</button>
+        </form>
+      </div>
+    </div>
+    <!-- -->
   </div>
-
+  <!-- Template-->
   <template id="template">
     <article class="card">
       <img class="card__delete-button" src="./images/Trash.svg">
@@ -62,7 +75,7 @@
       </div>
     </article>
   </template>
-
+  <!-- Script-->
   <script src="script.js"></script>
 
 </body>
