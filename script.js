@@ -105,6 +105,8 @@ editProfileButton.addEventListener('click', () => {
 
 // Добавляем обработчик события 'click' для кнопки добавления новой карточки
 newCardButton.addEventListener('click', () => {
+  // Очищение полей
+  resetNewCardPopupInputs();
   // Открываем 'popup' добавления новой карточки
   openPopup(newCardPopup);
 });
@@ -144,7 +146,7 @@ function creatNewCard(name, link) {
   return newCard;
 }
 
-// Create new card
+// Создаём новые карточки из заданного массива initialCards
 initialCards.forEach(cardElement => {
   const newCard = creatNewCard(cardElement.name, cardElement.link);
   addNewCard(newCard);
@@ -161,8 +163,14 @@ function handleNewCardFormSubmit(event) {
 
   const newCard = creatNewCard(newCardAddTitle.value, newCardAddLink.value);
   addNewCard(newCard);
+
   // Закрываем 'popup'
   closePopup(newCardPopup);
+}
+
+function resetNewCardPopupInputs() {
+  newCardAddTitle.value = '';
+  newCardAddLink.value = '';
 }
 
 newCardForm.addEventListener('submit', (event) => handleNewCardFormSubmit(event));
