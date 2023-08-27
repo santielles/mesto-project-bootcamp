@@ -37,7 +37,6 @@ const editProfileButton = profile.querySelector('.profile__edit-button');
 // Ссылка на DOM элемент кнопки для добавления новой карточки
 const newCardButton = profile.querySelector('.profile__add-button');
 
-
 // Profile Popup
 // Ссылка на DOM элемент 'edit-profile-popup' редактирования профиля
 const profilePopup = document.getElementById('edit-profile-popup');
@@ -61,6 +60,11 @@ const newCardForm = newCardPopup.querySelector('.popup__form');
 const newCardAddTitle = document.getElementById('add-title');
 // Ссылка на DOM элемент поля ввода ссылки в форме добавления новой карточки
 const newCardAddLink = document.getElementById('add-link');
+
+const cards = document.querySelector('.cards');
+const template = document.getElementById('template');
+const templateCard = template.content.querySelector('.card');
+
 /*
 Эта функция закрывает (делает невидимым) переданный в неё 'popup', удаляя у него класс 'popup_opened'
 Параметр 'popup' - это ссылка на DOM элемент, представляющий собой 'popup'
@@ -77,6 +81,33 @@ function openPopup(popup) {
   popup.classList.add('popup_opened');
 }
 
+function resetNewCardPopupInputs() {
+  newCardAddTitle.value = '';
+  newCardAddLink.value = '';
+}
+
+function creatNewCard(name, link) {
+  const newCard = templateCard.cloneNode(true);
+  const cardImage = newCard.querySelector(".card__image");
+  const cardTitle = newCard.querySelector(".card__title");
+  cardImage.src = link;
+  cardImage.alt = name;
+  cardTitle.textContent = name;
+
+  // Кнопка удаления карточки
+  const deleteButton = newCard.querySelector('.card__delete-button');
+  deleteButton.addEventListener('click', () => deleteButton.closest('.card').remove());
+
+  // Кнопка like
+  const likeButton = newCard.querySelector('.card__like');
+  likeButton.addEventListener('click', () => likeButton.classList.toggle('card__like_mode-active'));
+  return newCard;
+}
+
+// Add new card
+function addNewCard(newCard) {
+  cards.prepend(newCard);
+}
 /*
 Эта функция обрабатывает нажатие на кнопку 'Сохранить' в форме редактировниая профиля
 Она обновляет имя и описание в профиле и закрывает 'popup'
@@ -91,6 +122,15 @@ function handleProfileEditFormSubmit(event) {
   profileAbout.textContent = profileEditJob.value;
   // Закрываем 'popup'
   closePopup(profilePopup);
+}
+
+function handleNewCardFormSubmit(event) {
+  // Отменяем стандартное действие браузера по отправке формы, чтобы предотвратить перезагрузку страницы
+  event.preventDefault();
+  const newCard = creatNewCard(newCardAddTitle.value, newCardAddLink.value);
+  addNewCard(newCard);
+  // Закрываем 'popup'
+  closePopup(newCardPopup);
 }
 
 // Добавляем обработчик события 'click' для кнопки редактирования профиля
@@ -124,53 +164,10 @@ profileEditForm.addEventListener('submit', (event) => handleProfileEditFormSubmi
 // При клике на эту кнопку будет вызвана функция closePopup с аргументом profilePopup
 closeProfileButton.addEventListener('click', () => closePopup(profilePopup));
 
-const cards = document.querySelector('.cards');
-const template = document.getElementById('template');
-const templateCard = template.content.querySelector('.card');
-
-function creatNewCard(name, link) {
-  const newCard = templateCard.cloneNode(true);
-  const cardImage = newCard.querySelector(".card__image");
-  const cardTitle = newCard.querySelector(".card__title");
-  cardImage.src = link;
-  cardImage.alt = name;
-  cardTitle.textContent = name;
-
-  // Кнопка удаления карточки
-  const deleteButton = newCard.querySelector('.card__delete-button');
-  deleteButton.addEventListener('click', () => deleteButton.closest('.card').remove());
-
-  // Кнопка like
-  const likeButton = newCard.querySelector('.card__like');
-  likeButton.addEventListener('click', () => likeButton.classList.toggle('card__like_mode-active'));
-  return newCard;
-}
+newCardForm.addEventListener('submit', (event) => handleNewCardFormSubmit(event));
 
 // Создаём новые карточки из заданного массива initialCards
 initialCards.forEach(cardElement => {
   const newCard = creatNewCard(cardElement.name, cardElement.link);
   addNewCard(newCard);
 });
-
-// Add new card
-function addNewCard(newCard) {
-  cards.prepend(newCard);
-}
-
-function handleNewCardFormSubmit(event) {
-  // Отменяем стандартное действие браузера по отправке формы, чтобы предотвратить перезагрузку страницы
-  event.preventDefault();
-
-  const newCard = creatNewCard(newCardAddTitle.value, newCardAddLink.value);
-  addNewCard(newCard);
-
-  // Закрываем 'popup'
-  closePopup(newCardPopup);
-}
-
-function resetNewCardPopupInputs() {
-  newCardAddTitle.value = '';
-  newCardAddLink.value = '';
-}
-
-newCardForm.addEventListener('submit', (event) => handleNewCardFormSubmit(event));
