@@ -123,12 +123,6 @@ deleteButtonsArray.forEach(
 const likeButtonArray = document.querySelectorAll('.card__like');
 likeButtonArray.forEach(
   likeButton => {
-    likeButton.addEventListener('click', () => {
-      if (likeButton.classList.contains('card__like_mode-active')) {
-        likeButton.classList.remove('card__like_mode-active')
-      } else {
-        likeButton.classList.add('card__like_mode-active')
-      };
-    });
+    likeButton.addEventListener('click', () => likeButton.classList.toggle('card__like_mode-active'));
   }
 )
