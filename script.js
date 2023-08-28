@@ -65,6 +65,9 @@ const cards = document.querySelector('.cards');
 const template = document.getElementById('template');
 const templateCard = template.content.querySelector('.card');
 
+const overlayImage = document.getElementById('overlay-image-open');
+const popupOverlayImage = overlayImage.querySelector(".popup__overlay-image");
+const popupOverlayCaption = overlayImage.querySelector(".popup__overlay-caption");
 /*
 Эта функция закрывает (делает невидимым) переданный в неё 'popup', удаляя у него класс 'popup_opened'
 Параметр 'popup' - это ссылка на DOM элемент, представляющий собой 'popup'
@@ -93,6 +96,17 @@ function creatNewCard(name, link) {
   cardImage.src = link;
   cardImage.alt = name;
   cardTitle.textContent = name;
+  cardImage.addEventListener('click', () => {
+    popupOverlayImage.src = link;
+    popupOverlayImage.alt = name;
+    popupOverlayCaption.textContent = name;
+    overlayImage.classList.add('popup_opened')
+  });
+
+  const closePopupOverlay = overlayImage.querySelector('.popup__close-button');
+  closePopupOverlay.addEventListener('click', () => {
+    closePopup(overlayImage)
+  });
 
   // Кнопка удаления карточки
   const deleteButton = newCard.querySelector('.card__delete-button');

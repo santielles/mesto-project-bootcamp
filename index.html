@@ -62,21 +62,27 @@
         </form>
       </div>
     </div>
-    <!-- -->
-  </div>
-  <!-- Template-->
-  <template id="template">
-    <article class="card">
-      <img class="card__delete-button" src="./images/Trash.svg">
-      <img class="card__image" src="" alt="">
-      <div class="card__container">
-        <h2 class="card__title"></h2>
-        <button type="button" class="card__like"></button>
+    <!-- Popup overlay image -->
+    <div class="popup popup_opacity" id="overlay-image-open">
+      <div class="popup__overlay">
+        <button type="button" class="popup__close-button"></button>
+        <img class="popup__overlay-image" src="#" alt="Фото">
+        <p class="popup__overlay-caption">xcvx</p>
       </div>
-    </article>
-  </template>
-  <!-- Script-->
-  <script src="script.js"></script>
+    </div>
+    <!-- Template-->
+    <template id="template">
+      <article class="card">
+        <img class="card__delete-button" src="./images/Trash.svg">
+        <img class="card__image" src="" alt="">
+        <div class="card__container">
+          <h2 class="card__title"></h2>
+          <button type="button" class="card__like"></button>
+        </div>
+      </article>
+    </template>
+    <!-- Script-->
+    <script src="script.js"></script>
 
 </body>
 
