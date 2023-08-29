@@ -125,8 +125,8 @@ function createNewCard(name, link) {
     popupOverlayImage.alt = name;
     // В переменной popupOverlayCaption у нас ссылка на элемент подписи картинки в popup. Подставляем значение из параметра 'name'.
     popupOverlayCaption.textContent = name;
-    // Тут мы добавляем класс, который запускает открытие popup.
-    overlayImagePopup.classList.add('popup_opened'); openPopup()
+    // Открываем popup
+    openPopup(overlayImagePopup);
   });
 
   // Кнопка удаления карточки.
