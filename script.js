@@ -94,11 +94,8 @@ function openPopup(popup) {
 /*
 Эта функция очищает поля ввода данных 'Наименование' и 'Ссылка' при открытии popup для добавления новой карточки.
 */
-function resetNewCardPopupInputs() {
-  // Для наименования
-  newCardAddTitle.value = '';
-  // Для ссылки
-  newCardAddLink.value = '';
+function resetFormInputs(form) {
+  form.reset();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -201,8 +198,8 @@ editProfileButton.addEventListener('click', () => {
 
 // Добавляем обработчик события 'click' для кнопки добавления новой карточки.
 newCardButton.addEventListener('click', () => {
-  // Очищаем поля.
-  resetNewCardPopupInputs();
+  // Очищаем поля формы.
+  resetFormInputs(newCardForm);
   // Открываем popup добавления новой карточки.
   openPopup(newCardPopup);
 });
