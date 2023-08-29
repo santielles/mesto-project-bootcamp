@@ -70,11 +70,11 @@ const template = document.getElementById('template');
 const templateCard = template.content.querySelector('.card');
 
 // Ссылка на DOM элемент в popup для открытия popup с картинкой в большом размере.
-const overlayImage = document.getElementById('overlay-image-open');
+const overlayImagePopup = document.getElementById('overlay-image-open');
 // Ссылка на DOM элемент в popup с img.
-const popupOverlayImage = overlayImage.querySelector(".popup__overlay-image");
+const popupOverlayImage = overlayImagePopup.querySelector(".popup__overlay-image");
 // Ссылка на DOM элемент в popup с title (подписью к картинке).
-const popupOverlayCaption = overlayImage.querySelector(".popup__overlay-caption");
+const popupOverlayCaption = overlayImagePopup.querySelector(".popup__overlay-caption");
 /*
 Эта функция закрывает (делает невидимым) переданный в неё popup, удаляя у него класс 'popup_opened'.
 Параметр popup — это ссылка на DOM-элемент, представляющий собой popup.
@@ -123,15 +123,15 @@ function createNewCard(name, link) {
     // В переменной popupOverlayCaption у нас ссылка на элемент подписи картинки в popup. Подставляем значение из параметра 'name'.
     popupOverlayCaption.textContent = name;
     // Тут мы добавляем класс, который запускает открытие popup.
-    overlayImage.classList.add('popup_opened');
+    overlayImagePopup.classList.add('popup_opened'); openPopup()
   });
 
   // Ищем кнопку закрытия popup и записываем ссылку на неё в переменную.
-  const closePopupOverlay = overlayImage.querySelector('.popup__close-button');
+  const closePopupOverlay = overlayImagePopup.querySelector('.popup__close-button');
   // Добавляем слушатель по клику для закрытия popup.
   closePopupOverlay.addEventListener('click', () => {
     // Вызываем функцию закрытия popup.
-    closePopup(overlayImage);
+    closePopup(overlayImagePopup);
   });
 
   // Кнопка удаления карточки.
