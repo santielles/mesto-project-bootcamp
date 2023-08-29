@@ -75,6 +75,9 @@ const overlayImagePopup = document.getElementById('overlay-image-open');
 const popupOverlayImage = overlayImagePopup.querySelector(".popup__overlay-image");
 // Ссылка на DOM элемент в popup с title (подписью к картинке).
 const popupOverlayCaption = overlayImagePopup.querySelector(".popup__overlay-caption");
+
+const closeButtonList = document.querySelectorAll('.popup__close-button');
+
 /*
 Эта функция закрывает (делает невидимым) переданный в неё popup, удаляя у него класс 'popup_opened'.
 Параметр popup — это ссылка на DOM-элемент, представляющий собой popup.
@@ -124,14 +127,6 @@ function createNewCard(name, link) {
     popupOverlayCaption.textContent = name;
     // Тут мы добавляем класс, который запускает открытие popup.
     overlayImagePopup.classList.add('popup_opened'); openPopup()
-  });
-
-  // Ищем кнопку закрытия popup и записываем ссылку на неё в переменную.
-  const closePopupOverlay = overlayImagePopup.querySelector('.popup__close-button');
-  // Добавляем слушатель по клику для закрытия popup.
-  closePopupOverlay.addEventListener('click', () => {
-    // Вызываем функцию закрытия popup.
-    closePopup(overlayImagePopup);
   });
 
   // Кнопка удаления карточки.
@@ -204,18 +199,9 @@ newCardButton.addEventListener('click', () => {
   openPopup(newCardPopup);
 });
 
-closeNewCardPopupButton.addEventListener('click', () => {
-  // Закрываем popup добавления новой карточки.
-  closePopup(newCardPopup);
-});
-
 // Добавляем обработчик события 'submit' для формы редактирования профиля.
 // При отправке формы будет вызвана функция handleProfileEditFormSubmit, в которую как аргумент будет передано событие 'submit'.
 profileEditForm.addEventListener('submit', (event) => handleProfileEditFormSubmit(event));
-
-// Добавляем обработчик события 'click' для кнопки закрытия профиля.
-// При клике на эту кнопку будет вызвана функция closePopup с аргументом profilePopup.
-closeProfileButton.addEventListener('click', () => closePopup(profilePopup));
 
 newCardForm.addEventListener('submit', (event) => handleNewCardFormSubmit(event));
 
@@ -223,4 +209,13 @@ newCardForm.addEventListener('submit', (event) => handleNewCardFormSubmit(event)
 initialCards.forEach(cardElement => {
   const newCard = createNewCard(cardElement.name, cardElement.link);
   addNewCard(newCard);
+});
+
+
+closeButtonList.forEach(closeButton => {
+  // Добавляем обработчик события 'click' для кнопки закрытия профиля.
+  // При клике на эту кнопку будет вызвана функция closePopup с аргументом closeButton.closest('.popup') - найти ближайшего родителя кнопки с классом '.popup'
+  closeButton.addEventListener('click', () => {
+    closePopup(closeButton.closest('.popup'));
+  });
 });
