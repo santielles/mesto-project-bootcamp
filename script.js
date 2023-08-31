@@ -117,25 +117,22 @@ function createNewCard(name, link) {
   // Полю названия изображения присваиваем значение из параметра 'name'.
   cardTitle.textContent = name;
 
-  // Слушатель по клику на картинку в карточке (открывает popup в большем размере).
-  cardImage.addEventListener('click', () => {
-    // В переменной popupOverlayImage у нас ссылка на тэг img в popup. Указываем атрибут src у img и присваиваем ему значение из параметра 'link'.
-    popupOverlayImage.src = link;
-    // Та же переменная, но тут указываем атрибут alt у img и присваиваем ему значение из параметра 'name'.
-    popupOverlayImage.alt = name;
-    // В переменной popupOverlayCaption у нас ссылка на элемент подписи картинки в popup. Подставляем значение из параметра 'name'.
-    popupOverlayCaption.textContent = name;
-    // Открываем popup
-    openPopup(overlayImagePopup);
-  });
 
-  // Кнопка удаления карточки.
-  const deleteButton = newCard.querySelector('.card__delete-button');
-  deleteButton.addEventListener('click', () => deleteButton.closest('.card').remove());
+  // // Слушатель по клику на картинку в карточке (открывает popup в большем размере).
+  // cardImage.addEventListener('click', () => {
+  //   // В переменной popupOverlayImage у нас ссылка на тэг img в popup. Указываем атрибут src у img и присваиваем ему значение из параметра 'link'.
+  //   popupOverlayImage.src = link;
+  //   // Та же переменная, но тут указываем атрибут alt у img и присваиваем ему значение из параметра 'name'.
+  //   popupOverlayImage.alt = name;
+  //   // В переменной popupOverlayCaption у нас ссылка на элемент подписи картинки в popup. Подставляем значение из параметра 'name'.
+  //   popupOverlayCaption.textContent = name;
+  //   // Открываем popup
+  //   openPopup(overlayImagePopup);
+  // });
 
-  // Кнопка "like".
-  const likeButton = newCard.querySelector('.card__like');
-  likeButton.addEventListener('click', () => likeButton.classList.toggle('card__like_mode-active'));
+  // // Кнопка удаления карточки.
+  // const deleteButton = newCard.querySelector('.card__delete-button');
+  // deleteButton.addEventListener('click', () => deleteButton.closest('.card').remove());
 
   return newCard;
 }
@@ -181,6 +178,12 @@ function handleNewCardFormSubmit(event) {
   closePopup(newCardPopup);
 }
 
+// Данная функция проставляет или убирает лайк
+// likeButton - это ссылка на DOM элемент кнопки лайка
+function handleLikeButtonClick(likeButton) {
+  likeButton.classList.toggle('card__like_mode-active');
+}
+
 // Добавляем обработчик события 'click' для кнопки редактирования профиля.
 editProfileButton.addEventListener('click', () => {
   // Заполняем поле для имени в форме редактирования профиля текущим значением из профиля.
@@ -211,11 +214,20 @@ initialCards.forEach(cardElement => {
   addNewCard(newCard);
 });
 
-
 closeButtonList.forEach(closeButton => {
   // Добавляем обработчик события 'click' для кнопки закрытия профиля.
   // При клике на эту кнопку будет вызвана функция closePopup с аргументом closeButton.closest('.popup') - найти ближайшего родителя кнопки с классом '.popup'
   closeButton.addEventListener('click', () => {
     closePopup(closeButton.closest('.popup'));
   });
+});
+
+cards.addEventListener('click', (event) => {
+  // event.target содержит ссылку на DOM элемент, на который нажали мышкой
+
+  // Если нажали на кнопку "like"
+  if (event.target.classList.contains('card__like')) {
+    // Вызываем функцию 'cardLike' и как аргумент передаём в неё ссылку на DOM элемент кнопки лайка, на который нажали мышкой
+    handleLikeButtonClick(event.target);
+  }
 });
