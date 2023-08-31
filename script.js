@@ -130,10 +130,6 @@ function createNewCard(name, link) {
   //   openPopup(overlayImagePopup);
   // });
 
-  // // Кнопка удаления карточки.
-  // const deleteButton = newCard.querySelector('.card__delete-button');
-  // deleteButton.addEventListener('click', () => deleteButton.closest('.card').remove());
-
   return newCard;
 }
 // Здесь функция createNewCard заканчивается
@@ -184,6 +180,12 @@ function handleLikeButtonClick(likeButton) {
   likeButton.classList.toggle('card__like_mode-active');
 }
 
+// Данная функция удаляет карточку со страницы
+// trashButton - это ссылка на DOM элемент кнопки удаления карточки
+function handleTrashButtonClick(trashButton) {
+  trashButton.closest('.card').remove();
+}
+
 // Добавляем обработчик события 'click' для кнопки редактирования профиля.
 editProfileButton.addEventListener('click', () => {
   // Заполняем поле для имени в форме редактирования профиля текущим значением из профиля.
@@ -229,5 +231,9 @@ cards.addEventListener('click', (event) => {
   if (event.target.classList.contains('card__like')) {
     // Вызываем функцию 'cardLike' и как аргумент передаём в неё ссылку на DOM элемент кнопки лайка, на который нажали мышкой
     handleLikeButtonClick(event.target);
+  }
+
+  if (event.target.classList.contains('card__delete-button')) {
+    handleTrashButtonClick(event.target);
   }
 });
