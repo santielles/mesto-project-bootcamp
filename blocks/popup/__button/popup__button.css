@@ -1,5 +1,5 @@
 .popup__button {
-  margin-top: 48px;
+  margin-top: 18px;
   padding: 0;
   max-width: 358px;
   height: 50px;
@@ -14,14 +14,20 @@
   border: none;
   cursor: pointer;
 }
+
 @media (max-width: 660px) {
-    .popup__button {
-        margin-top: 45px;
-        max-width: 238px;
-        height: 46px;
-        font-size: 14px;
-      }
+  .popup__button {
+    margin-top: 45px;
+    max-width: 238px;
+    height: 46px;
+    font-size: 14px;
+  }
 }
+
+.popup__button:disabled {
+  background-color: #f1f1f1;
+}
+
 .popup__button:hover {
   opacity: 0.6;
   transition: 1s;
