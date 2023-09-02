@@ -43,11 +43,13 @@ const profilePopup = document.getElementById('edit-profile-popup');
 // Ссылка на DOM элемент кнопки закрытия 'edit-profile-popup' для редактирования профиля
 const closeProfileButton = profilePopup.querySelector('.popup__close-button');
 // Ссылка на DOM элемент формы редактирования профиля
-const profileEditForm = profilePopup.querySelector('.popup__form');
+const profileEditForm = document.forms.editProfileForm;
 // Ссылка на DOM элемент поля редактирования имени в форме редактирования профиля
-const profileEditName = document.getElementById('edit-profile-name');
+const profileEditName = profileEditForm.elements.profileInputName;
 // Ссылка на DOM элемент поля редактирования описания в форме редактирования профиля
-const profileEditJob = document.getElementById('edit-profile-job');
+const profileEditJob = profileEditForm.elements.profileInputJob;
+// Ссылка на DOM элемент кнопки "Сохранить" в форме редактирования профиля
+const profileSaveButton = profileEditForm.querySelector('.popup__button');
 
 // New Card Popup
 // Ссылка на DOM элемент 'new-card-popup' для добавления новой карточки
@@ -55,11 +57,11 @@ const newCardPopup = document.getElementById('new-card-popup');
 // Ссылка на DOM элемент кнопки закрытия 'new-card-popup' для добавления новой карточки
 const closeNewCardPopupButton = newCardPopup.querySelector('.popup__close-button');
 // Ссылка на DOM элемент формы добавления новой карточки
-const newCardForm = newCardPopup.querySelector('.popup__form');
+const newCardForm = document.forms.newCardForm;
 // Ссылка на DOM элемент поля ввода названия в форме добавления новой карточки
-const newCardAddTitle = document.getElementById('add-title');
+const newCardAddTitle = newCardForm.elements.newCardFormTitle;
 // Ссылка на DOM элемент поля ввода ссылки в форме добавления новой карточки
-const newCardAddLink = document.getElementById('add-link');
+const newCardAddLink = newCardForm.elements.newCardFormLink;
 
 // Cards
 // Ссылка на DOM элемент 'cards'
@@ -77,6 +79,13 @@ const popupOverlayImage = overlayImagePopup.querySelector(".popup__overlay-image
 const popupOverlayCaption = overlayImagePopup.querySelector(".popup__overlay-caption");
 
 const closeButtonList = document.querySelectorAll('.popup__close-button');
+
+const validationSettings = {
+  inputSelector: '.popup__input',
+  buttonSelector: '.popup__button',
+  formSelector: '.popup__form',
+  invalidInputTextClass: 'popup__input-invalid',
+}
 
 /*
 Эта функция закрывает (делает невидимым) переданный в неё popup, удаляя у него класс 'popup_opened'
@@ -137,12 +146,17 @@ function addNewCard(newCard) {
 function handleProfileEditFormSubmit(event) {
   // Отменяем стандартное действие браузера по отправке формы, чтобы предотвратить перезагрузку страницы
   event.preventDefault();
+
   // Обновляем имя профиля на основе введенного значения в форме
   profileName.textContent = profileEditName.value;
   // Обновляем описание профиля на основе введенного значения в форме
   profileAbout.textContent = profileEditJob.value;
   // Закрываем popup
   closePopup(profilePopup);
+  // Получаем из event кнопку "Сохранить", которую нажали
+  const button = event.submitter;
+  // Делаем кнопку "Сохранить" неактивной
+  disableSubmitButton(button);
 }
 
 /*
@@ -159,6 +173,10 @@ function handleNewCardFormSubmit(event) {
   addNewCard(newCard);
   // Закрываем popup
   closePopup(newCardPopup);
+  // Получаем из event кнопку "Создать", которую нажали
+  const button = event.submitter;
+  // Делаем кнопку "Создать" неактивной
+  disableSubmitButton(button);
 }
 
 // Данная функция проставляет или убирает лайк
@@ -186,6 +204,76 @@ function handleOverlayImageClick(cardImage) {
 
   // Открываем popup
   openPopup(overlayImagePopup);
+}
+
+function showInputError(inputField, errorText, settings) {
+  // Здесь мы создаем привязку нашего input к его span(error). 'error-' это приставка, то есть в сумме получается имя нашего id у span "error-profile-input-name"
+  const errorID = 'error-' + inputField.id;
+  // И затем делаем ссылку как на DOM элемент
+  const errorElement = document.getElementById(errorID);
+  // Тут выводим сообщение в span об ошибке
+  errorElement.textContent = errorText;
+  inputField.classList.add(settings.invalidInputTextClass);
+}
+
+function hideInputError(inputField, settings) {
+  // Здесь мы создаем привязку нашего input к его span(error). 'error-' это приставка, то есть в сумме получается имя нашего id у span "error-profile-input-name"
+  const errorID = 'error-' + inputField.id;
+  // И затем делаем ссылку как на DOM элемент
+  const errorElement = document.getElementById(errorID);
+  // Тут выводим сообщение - '' (то есть прячем текст об ошибке)
+  errorElement.textContent = '';
+  inputField.classList.remove(settings.invalidInputTextClass);
+}
+
+function checkInputField(inputField, settings) {
+  // Если ошибки нет тогда вызываем функцию hideError
+  if (inputField.validity.valid) {
+    hideInputError(inputField, settings);
+    // Иначе вызывается функция showError
+  } else {
+    showInputError(inputField, inputField.validationMessage, settings);
+  }
+}
+
+function enableSubmitButton(button) {
+  button.disabled = false;
+}
+
+function disableSubmitButton(button) {
+  button.disabled = true;
+}
+
+
+function toggleSubmitButton(isFormValid, buttonSubmit) {
+  if (isFormValid) {
+    enableSubmitButton(buttonSubmit);
+  } else {
+    disableSubmitButton(buttonSubmit);
+  }
+}
+
+function setEventListeners(formElement, settings) {
+  const buttonSubmit = formElement.querySelector(settings.buttonSelector);
+  const inputList = formElement.querySelectorAll(settings.inputSelector);
+
+  inputList.forEach((input) => {
+    //Слушатель функции checkField, который срабатывает на каждое нажатие (input)
+    input.addEventListener('input', () => {
+      checkInputField(input, settings);
+      const checkIsFormValid = formElement.checkValidity();
+      toggleSubmitButton(checkIsFormValid, buttonSubmit);
+    })
+  });
+}
+
+function enableFormsValidation(settings) {
+  const formList = document.querySelectorAll(settings.formSelector);
+  formList.forEach((formElement) => {
+    setEventListeners(formElement, settings);
+    const buttonSubmit = formElement.querySelector(settings.buttonSelector);
+    disableSubmitButton(buttonSubmit);
+  });
 }
 
 // Добавляем обработчик события 'click' для кнопки редактирования профиля
@@ -245,3 +333,5 @@ cards.addEventListener('click', (event) => {
     handleOverlayImageClick(event.target);
   }
 });
+
+enableFormsValidation(validationSettings);
