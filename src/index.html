@@ -6,7 +6,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title lang="en">Mesto</title>
-  <link rel="stylesheet" href="./pages/index.css">
 </head>
 <!-- Body -->
 
@@ -15,14 +14,14 @@
     <!-- Header -->
 
     <header class="header" aria-label="Logo">
-      <img class="header__logo" src="./images/logo.svg" alt="Логотип Mesto">
+      <img class="header__logo" src="<%=require('./images/logo.svg')%>" alt="Логотип Mesto">
     </header>
     <!-- Main -->
     <main class="main">
       <!-- Profile -->
 
       <section class="profile" aria-label="Profile">
-        <img class="profile__avatar" src="./images/cat.jpg" alt="Аватар профайла">
+        <img class="profile__avatar" src="<%=require('./images/cat.jpg')%>" alt="Аватар профайла">
         <div class="profile__info">
           <div class="profile__info-wrapped">
             <h1 class="profile__name">Жак-Ив Кусь</h1>
@@ -89,7 +88,7 @@
   <!-- Template-->
   <template id="template">
     <article class="card">
-      <img class="card__delete-button" src="./images/Trash.svg">
+      <img class="card__delete-button" src="<%=require('./images/Trash.svg')%>">
       <img class="card__image" src="" alt="">
       <div class="card__container">
         <h2 class="card__title"></h2>
@@ -99,7 +98,7 @@
   </template>
 
   <!-- Script-->
-  <script src="./src/index.js" type="module"></script>
+  <script src="./index.js" type="module"></script>
 </body>
 
 </html>
