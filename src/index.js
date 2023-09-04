@@ -1,7 +1,7 @@
-import * as card from './card.js';
-import * as modal from './modal.js';
-import * as validate from './validate.js';
-import * as utils from './utils.js';
+import * as card from './components/card.js';
+import * as modal from './components/modal.js';
+import * as validate from './components/validate.js';
+import * as utils from './components/utils.js';
 
 const initialCards = [
   {
@@ -146,6 +146,12 @@ closeButtonList.forEach(closeButton => {
   // При клике на эту кнопку будет вызвана функция modal.closePopup с аргументом closeButton.closest('.popup') - найти ближайшего родителя кнопки с классом '.popup'
   closeButton.addEventListener('click', () => {
     modal.closePopup(closeButton.closest('.popup'));
+  });
+  closeButton.closest('.popup').addEventListener('mousedown', (event) => {
+    // Проверяем что щелчок мышкой был вне видимого окна popup
+    if (event.target === event.currentTarget) {
+      modal.closePopup(event.currentTarget);
+    }
   });
 });
 
