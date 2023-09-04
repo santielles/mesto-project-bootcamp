@@ -10,6 +10,13 @@ const popupOverlayCaption = overlayImagePopup.querySelector(".popup__overlay-cap
 */
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  // Если popup.storedListener существует, значит мы вешали EventListener на этот popup
+  if (popup.storedListener) {
+    // Удаляем EventListener
+    document.removeEventListener('keydown', popup.storedListener);
+    // Удаляем popup.storedListener
+    popup.storedListener = null;
+  }
 }
 
 /*
@@ -17,7 +24,15 @@ function closePopup(popup) {
 Параметр popup — это ссылка на DOM-элемент, представляющий собой popup
 */
 function openPopup(popup) {
+  // Так как мы не можем удалить EventListener который вызывает стрелочную функцию,
+  // а нам надо передать в неё аргументы, сохраняем стрелочную функцию в константу keydownListener
+  // и сохраняем ссылку на EventListener в popup.storedListener
+  const keydownListener = (event) => {
+    closePopupByEsc(event, popup);
+  };
   popup.classList.add('popup_opened');
+  document.addEventListener('keydown', keydownListener);
+  popup.storedListener = keydownListener;
 }
 
 // Данная функция открывает картинку в popup в большом размере
@@ -33,6 +48,13 @@ function handleOverlayImageClick(cardImage) {
 
   // Открываем popup
   openPopup(overlayImagePopup);
+}
+
+function closePopupByEsc(event, popup) {
+  // Если нажата Escape, закрываем popup
+  if (event.key === "Escape") {
+    closePopup(popup);
+  }
 }
 
 export { closePopup, openPopup, handleOverlayImageClick };
