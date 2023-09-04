@@ -1,3 +1,5 @@
+import './pages/index.css';
+
 import * as card from './components/card.js';
 import * as modal from './components/modal.js';
 import * as validate from './components/validate.js';
