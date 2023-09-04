@@ -147,6 +147,12 @@ closeButtonList.forEach(closeButton => {
   closeButton.addEventListener('click', () => {
     modal.closePopup(closeButton.closest('.popup'));
   });
+  closeButton.closest('.popup').addEventListener('mousedown', (event) => {
+    // Проверяем что щелчок мышкой был вне видимого окна popup
+    if (event.target === event.currentTarget) {
+      modal.closePopup(event.currentTarget);
+    }
+  });
 });
 
 card.cards.addEventListener('click', (event) => {

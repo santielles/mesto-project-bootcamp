@@ -26,7 +26,7 @@ function closePopup(popup) {
 function openPopup(popup) {
   // Так как мы не можем удалить EventListener который вызывает стрелочную функцию,
   // а нам надо передать в неё аргументы, сохраняем стрелочную функцию в константу keydownListener
-  // и сохраняем ссылку на EventListener в  popup.storedListener
+  // и сохраняем ссылку на EventListener в popup.storedListener
   const keydownListener = (event) => {
     closePopupByEsc(event, popup);
   };
@@ -57,4 +57,4 @@ function closePopupByEsc(event, popup) {
   }
 }
 
-export { closePopup, openPopup, handleOverlayImageClick, closePopupByEsc };
+export { closePopup, openPopup, handleOverlayImageClick };
