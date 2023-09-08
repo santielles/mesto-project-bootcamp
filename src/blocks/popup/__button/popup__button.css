@@ -26,6 +26,7 @@
 
 .popup__button:disabled {
   background-color: #f1f1f1;
+  cursor: default;
 }
 
 .popup__button:hover {

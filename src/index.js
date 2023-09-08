@@ -3,7 +3,6 @@ import './pages/index.css';
 import * as card from './components/card.js';
 import * as modal from './components/modal.js';
 import * as validate from './components/validate.js';
-import * as utils from './components/utils.js';
 
 const initialCards = [
   {
@@ -87,10 +86,6 @@ function handleProfileEditFormSubmit(event) {
   profileAbout.textContent = profileEditJob.value;
   // Закрываем popup
   modal.closePopup(profilePopup);
-  // Получаем из event кнопку "Сохранить", которую нажали
-  const button = event.submitter;
-  // Делаем кнопку "Сохранить" неактивной
-  utils.disableSubmitButton(button);
 }
 
 /*
@@ -111,10 +106,6 @@ function handleNewCardFormSubmit(event) {
   card.addNewCard(newCard);
   // Закрываем popup
   modal.closePopup(newCardPopup);
-  // Получаем из event кнопку "Создать", которую нажали
-  const button = event.submitter;
-  // Делаем кнопку "Создать" неактивной
-  utils.disableSubmitButton(button);
 }
 
 // Добавляем обработчик события 'click' для кнопки редактирования профиля
@@ -130,8 +121,10 @@ editProfileButton.addEventListener('click', () => {
 // Добавляем обработчик события 'click' для кнопки добавления новой карточки
 newCardButton.addEventListener('click', () => {
   // Очищаем поля формы
-  utils.resetFormInputs(newCardForm);
-  // Открываем popup добавления новой карточки
+  newCardForm.reset();
+  const submitButton = newCardForm.querySelector('.popup__button');
+  // Делаем кнопку "Создать" неактивной
+  validate.disableSubmitButton(submitButton)
   modal.openPopup(newCardPopup);
 });
 
@@ -148,12 +141,13 @@ initialCards.forEach(cardElement => {
 });
 
 closeButtonList.forEach(closeButton => {
+  const popup = closeButton.closest('.popup');
   // Добавляем обработчик события 'click' для кнопки закрытия профиля
   // При клике на эту кнопку будет вызвана функция modal.closePopup с аргументом closeButton.closest('.popup') - найти ближайшего родителя кнопки с классом '.popup'
   closeButton.addEventListener('click', () => {
-    modal.closePopup(closeButton.closest('.popup'));
+    modal.closePopup(popup);
   });
-  closeButton.closest('.popup').addEventListener('mousedown', (event) => {
+  popup.addEventListener('mousedown', (event) => {
     // Проверяем что щелчок мышкой был вне видимого окна popup
     if (event.target === event.currentTarget) {
       modal.closePopup(event.currentTarget);
