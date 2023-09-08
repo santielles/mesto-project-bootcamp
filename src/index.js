@@ -101,8 +101,12 @@ function handleProfileEditFormSubmit(event) {
 function handleNewCardFormSubmit(event) {
   // Отменяем стандартное действие браузера по отправке формы, чтобы предотвратить перезагрузку страницы
   event.preventDefault();
+  const cardObject = {
+    name: newCardAddTitle.value,
+    link: newCardAddLink.value
+  }
   // Создаём новую карточку с помощью функции 'createNewCard'
-  const newCard = card.createNewCard(newCardAddTitle.value, newCardAddLink.value);
+  const newCard = card.createNewCard(cardObject);
   // Добавляем созданную карточку на страницу
   card.addNewCard(newCard);
   // Закрываем popup
@@ -139,7 +143,7 @@ newCardForm.addEventListener('submit', (event) => handleNewCardFormSubmit(event)
 
 // Создаём новые карточки из заданного массива initialCards
 initialCards.forEach(cardElement => {
-  const newCard = card.createNewCard(cardElement.name, cardElement.link);
+  const newCard = card.createNewCard(cardElement);
   card.addNewCard(newCard);
 });
 
