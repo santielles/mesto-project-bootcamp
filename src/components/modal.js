@@ -37,14 +37,14 @@ function openPopup(popup) {
 
 // Данная функция открывает картинку в popup в большом размере
 // cardImage - это ссылка на DOM элемент картинки карточки
-function handleOverlayImageClick(cardImage) {
+function handleOverlayImageClick(src, alt) {
   // В переменной popupOverlayImage у нас ссылка на тэг img в popup
   // Указываем атрибут src у тега img popup картинки и присваиваем ему значение из cardImage
-  popupOverlayImage.src = cardImage.src;
+  popupOverlayImage.src = src;
   // Та же переменная, но тут указываем атрибут alt
-  popupOverlayImage.alt = cardImage.alt;
+  popupOverlayImage.alt = alt;
   // В переменной popupOverlayCaption у нас ссылка на элемент подписи картинки в popup
-  popupOverlayCaption.textContent = cardImage.alt;
+  popupOverlayCaption.textContent = alt;
 
   // Открываем popup
   openPopup(overlayImagePopup);

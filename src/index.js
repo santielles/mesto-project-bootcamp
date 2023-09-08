@@ -161,23 +161,4 @@ closeButtonList.forEach(closeButton => {
   });
 });
 
-card.cards.addEventListener('click', (event) => {
-  // event.target содержит ссылку на DOM элемент, на который нажали мышкой
-  // Если нажали на кнопку "like"
-  if (event.target.classList.contains('card__like')) {
-    // Вызываем функцию 'cardLike' и как аргумент передаём в неё ссылку на DOM элемент кнопки лайка, на который нажали мышкой
-    card.handleLikeButtonClick(event.target);
-  }
-  // Если нажали на кнопку удаления
-  if (event.target.classList.contains('card__delete-button')) {
-    // Вызываем функцию 'TrashButton' и как аргумент передаём в неё ссылку на DOM элемент кнопки удаления, на который нажали мышкой
-    card.handleTrashButtonClick(event.target);
-  }
-  // Если нажали на картинку карточки
-  if (event.target.classList.contains('card__image')) {
-    // Вызываем функцию 'OverlayImage' и как аргумент передаём в неё ссылку на DOM элемент картинки карточки, на который нажали мышкой
-    modal.handleOverlayImageClick(event.target);
-  }
-});
-
 validate.enableFormsValidation(validationSettings);
