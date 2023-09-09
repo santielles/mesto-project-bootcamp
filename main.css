@@ -35,6 +35,5 @@
 .popup__overlay-image{max-height:75vh;max-width:75vw}
 .popup__overlay{display:flex;flex-direction:column;position:relative}
 .popup__overlay-caption{color:#fff;font-size:12px;font-style:normal;font-weight:400;line-height:normal;margin:0;padding-top:10px}
-.popup__button{background:#000;border:none;border-radius:2px;color:#fff;cursor:pointer;font-size:18px;font-style:normal;font-weight:400;height:50px;line-height:normal;margin-top:18px;max-width:358px;padding:0;text-align:center}@media (max-width:660px){.popup__button{font-size:14px;height:46px;margin-top:45px;max-width:238px}}.popup__button:disabled{background-color:#f1f1f1}.popup__button:hover{opacity:.6;transition:1s}
-.popup__button_disabled{background-color:#f1f1f1;cursor:default}
+.popup__button{background:#000;border:none;border-radius:2px;color:#fff;cursor:pointer;font-size:18px;font-style:normal;font-weight:400;height:50px;line-height:normal;margin-top:18px;max-width:358px;padding:0;text-align:center}@media (max-width:660px){.popup__button{font-size:14px;height:46px;margin-top:45px;max-width:238px}}.popup__button:disabled{background-color:#f1f1f1;cursor:default}.popup__button:hover{opacity:.6;transition:1s}
 
