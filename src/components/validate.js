@@ -1,5 +1,3 @@
-import { enableSubmitButton, disableSubmitButton } from './utils.js';
-
 function showInputError(inputField, errorText, settings) {
   // Здесь мы создаем привязку нашего input к его span(error). 'error-' это приставка, то есть в сумме получается имя нашего id у span "error-profile-input-name"
   const errorID = 'error-' + inputField.id;
@@ -38,10 +36,12 @@ function toggleSubmitButton(isFormValid, buttonSubmit) {
   }
 }
 
+
+
 function setValidationEventListeners(formElement, settings) {
   const buttonSubmit = formElement.querySelector(settings.buttonSelector);
   const inputList = formElement.querySelectorAll(settings.inputSelector);
-
+  disableSubmitButton(buttonSubmit);
   inputList.forEach((input) => {
     //Слушатель функции checkField, который срабатывает на каждое нажатие (input)
     input.addEventListener('input', () => {
@@ -56,9 +56,15 @@ function enableFormsValidation(settings) {
   const formList = document.querySelectorAll(settings.formSelector);
   formList.forEach((formElement) => {
     setValidationEventListeners(formElement, settings);
-    const buttonSubmit = formElement.querySelector(settings.buttonSelector);
-    disableSubmitButton(buttonSubmit);
   });
 }
 
-export { showInputError, hideInputError, checkInputField, toggleSubmitButton, setValidationEventListeners, enableFormsValidation };
+function enableSubmitButton(button) {
+  button.disabled = false;
+}
+
+function disableSubmitButton(button) {
+  button.disabled = true;
+}
+
+export { showInputError, hideInputError, checkInputField, toggleSubmitButton, setValidationEventListeners, enableFormsValidation, disableSubmitButton };

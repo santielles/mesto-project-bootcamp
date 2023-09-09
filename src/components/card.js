@@ -1,3 +1,5 @@
+import { handleOverlayImageClick } from './modal.js';
+
 // Ссылка на DOM элемент 'cards'
 const cards = document.querySelector('.cards');
 // Ссылка на DOM элемент 'template' шаблона для новой карточки
@@ -7,20 +9,30 @@ const templateCard = template.content.querySelector('.card');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Эта функция создает новую карточку путем клонирования шаблона template. Имеет на вход два параметра: 'name' и 'link'
-function createNewCard(name, link) {
+function createNewCard(card) {
   // Здесь мы клонируем DOM-элемент шаблона карточки
   const newCard = templateCard.cloneNode(true);
   // Ссылка на DOM-элемент поля для ссылки на изображение
   const cardImage = newCard.querySelector(".card__image");
   // Ссылка на DOM-элемент поля для названия изображения
   const cardTitle = newCard.querySelector(".card__title");
-  // Для тэга img карточки указываем атрибут src и присваиваем ему значение из параметра 'link'
-  cardImage.src = link;
-  // Для тэга img карточки указываем атрибут alt и присваиваем ему значение из параметра 'name'
-  cardImage.alt = name;
-  // Полю названия изображения присваиваем значение из параметра 'name'
-  cardTitle.textContent = name;
 
+  const likeButton = newCard.querySelector('.card__like');
+  const deleteButton = newCard.querySelector('.card__delete-button');
+
+  // Для тэга img карточки указываем атрибут src и присваиваем ему значение из параметра 'link'
+  cardImage.src = card.link;
+  // Для тэга img карточки указываем атрибут alt и присваиваем ему значение из параметра 'name'
+  cardImage.alt = card.name;
+  // Полю названия изображения присваиваем значение из параметра 'name'
+  cardTitle.textContent = card.name;
+
+  // Если нажали на кнопку "like"
+  likeButton.addEventListener('click', () => { handleLikeButtonClick(likeButton) });
+  // Если нажали на кнопку удаления
+  deleteButton.addEventListener('click', () => { handleTrashButtonClick(deleteButton) });
+  // Если нажали на картинку карточки
+  cardImage.addEventListener('click', () => { handleOverlayImageClick(cardImage.src, cardImage.alt) });
   return newCard;
 }
 // Здесь функция createNewCard заканчивается

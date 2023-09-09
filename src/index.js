@@ -3,7 +3,6 @@ import './pages/index.css';
 import * as card from './components/card.js';
 import * as modal from './components/modal.js';
 import * as validate from './components/validate.js';
-import * as utils from './components/utils.js';
 
 const initialCards = [
   {
@@ -87,10 +86,6 @@ function handleProfileEditFormSubmit(event) {
   profileAbout.textContent = profileEditJob.value;
   // Закрываем popup
   modal.closePopup(profilePopup);
-  // Получаем из event кнопку "Сохранить", которую нажали
-  const button = event.submitter;
-  // Делаем кнопку "Сохранить" неактивной
-  utils.disableSubmitButton(button);
 }
 
 /*
@@ -101,16 +96,16 @@ function handleProfileEditFormSubmit(event) {
 function handleNewCardFormSubmit(event) {
   // Отменяем стандартное действие браузера по отправке формы, чтобы предотвратить перезагрузку страницы
   event.preventDefault();
+  const cardObject = {
+    name: newCardAddTitle.value,
+    link: newCardAddLink.value
+  }
   // Создаём новую карточку с помощью функции 'createNewCard'
-  const newCard = card.createNewCard(newCardAddTitle.value, newCardAddLink.value);
+  const newCard = card.createNewCard(cardObject);
   // Добавляем созданную карточку на страницу
   card.addNewCard(newCard);
   // Закрываем popup
   modal.closePopup(newCardPopup);
-  // Получаем из event кнопку "Создать", которую нажали
-  const button = event.submitter;
-  // Делаем кнопку "Создать" неактивной
-  utils.disableSubmitButton(button);
 }
 
 // Добавляем обработчик события 'click' для кнопки редактирования профиля
@@ -126,8 +121,10 @@ editProfileButton.addEventListener('click', () => {
 // Добавляем обработчик события 'click' для кнопки добавления новой карточки
 newCardButton.addEventListener('click', () => {
   // Очищаем поля формы
-  utils.resetFormInputs(newCardForm);
-  // Открываем popup добавления новой карточки
+  newCardForm.reset();
+  const submitButton = newCardForm.querySelector('.popup__button');
+  // Делаем кнопку "Создать" неактивной
+  validate.disableSubmitButton(submitButton)
   modal.openPopup(newCardPopup);
 });
 
@@ -139,41 +136,23 @@ newCardForm.addEventListener('submit', (event) => handleNewCardFormSubmit(event)
 
 // Создаём новые карточки из заданного массива initialCards
 initialCards.forEach(cardElement => {
-  const newCard = card.createNewCard(cardElement.name, cardElement.link);
+  const newCard = card.createNewCard(cardElement);
   card.addNewCard(newCard);
 });
 
 closeButtonList.forEach(closeButton => {
+  const popup = closeButton.closest('.popup');
   // Добавляем обработчик события 'click' для кнопки закрытия профиля
   // При клике на эту кнопку будет вызвана функция modal.closePopup с аргументом closeButton.closest('.popup') - найти ближайшего родителя кнопки с классом '.popup'
   closeButton.addEventListener('click', () => {
-    modal.closePopup(closeButton.closest('.popup'));
+    modal.closePopup(popup);
   });
-  closeButton.closest('.popup').addEventListener('mousedown', (event) => {
+  popup.addEventListener('mousedown', (event) => {
     // Проверяем что щелчок мышкой был вне видимого окна popup
     if (event.target === event.currentTarget) {
       modal.closePopup(event.currentTarget);
     }
   });
-});
-
-card.cards.addEventListener('click', (event) => {
-  // event.target содержит ссылку на DOM элемент, на который нажали мышкой
-  // Если нажали на кнопку "like"
-  if (event.target.classList.contains('card__like')) {
-    // Вызываем функцию 'cardLike' и как аргумент передаём в неё ссылку на DOM элемент кнопки лайка, на который нажали мышкой
-    card.handleLikeButtonClick(event.target);
-  }
-  // Если нажали на кнопку удаления
-  if (event.target.classList.contains('card__delete-button')) {
-    // Вызываем функцию 'TrashButton' и как аргумент передаём в неё ссылку на DOM элемент кнопки удаления, на который нажали мышкой
-    card.handleTrashButtonClick(event.target);
-  }
-  // Если нажали на картинку карточки
-  if (event.target.classList.contains('card__image')) {
-    // Вызываем функцию 'OverlayImage' и как аргумент передаём в неё ссылку на DOM элемент картинки карточки, на который нажали мышкой
-    modal.handleOverlayImageClick(event.target);
-  }
 });
 
 validate.enableFormsValidation(validationSettings);
