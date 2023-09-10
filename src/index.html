@@ -21,13 +21,13 @@
       <!-- Profile -->
 
       <section class="profile" aria-label="Profile">
-        <img class="profile__avatar" src="<%=require('./images/cat.jpg')%>" alt="Аватар профайла">
+        <img class="profile__avatar" src="" alt="Аватар профайла">
         <div class="profile__info">
           <div class="profile__info-wrapped">
-            <h1 class="profile__name">Жак-Ив Кусь</h1>
+            <h1 class="profile__name"></h1>
             <button type="button" class="profile__edit-button"></button>
           </div>
-          <p class="profile__about">Исследователь океана</p>
+          <p class="profile__about"></p>
         </div>
         <button type="button" class="profile__add-button"></button>
       </section>
@@ -42,7 +42,7 @@
       <p class="footer__title">&copy; 2023 Elena Botkina</p>
     </footer>
 
-    <!-- Popup edit profile-->
+    <!-- Popup edit profile -->
     <div class="popup" id="edit-profile-popup">
       <div class="popup__container">
         <button type="button" class="popup__close-button"></button>
@@ -59,7 +59,21 @@
       </div>
     </div>
 
-    <!-- Popup new card-->
+    <!-- Popup edit profile avatar -->
+    <div class="popup" id="edit-profile-avatar">
+      <div class="popup__container">
+        <button type="button" class="popup__close-button"></button>
+        <h2 class="popup__header">Обновить аватар</h2>
+        <form class="popup__form" name="editProfileAvatar" novalidate>
+          <input class="popup__input" name="editProfileAvatarLink" id='edit-avatar-input-link' type="url" placeholder=""
+            required>
+          <span class="popup__input-error" id="error-edit-avatar-input-link"></span>
+          <button type="submit" class="popup__button">Сохранить</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Popup new card -->
     <div class="popup" id="new-card-popup">
       <div class="popup__container">
         <button type="button" class="popup__close-button"></button>
@@ -92,7 +106,10 @@
       <img class="card__image" src="" alt="">
       <div class="card__container">
         <h2 class="card__title"></h2>
-        <button type="button" class="card__like"></button>
+        <div class="card__likes-container">
+          <button type="button" class="card__like"></button>
+          <span class="card__likes-count"></span>
+        </div>
       </div>
     </article>
   </template>

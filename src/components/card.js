@@ -1,3 +1,5 @@
+import { profileObject } from './../index.js';
+import { deleteServerCard } from './api.js';
 import { handleOverlayImageClick } from './modal.js';
 
 // Ссылка на DOM элемент 'cards'
@@ -8,7 +10,7 @@ const template = document.getElementById('template');
 const templateCard = template.content.querySelector('.card');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Эта функция создает новую карточку путем клонирования шаблона template. Имеет на вход два параметра: 'name' и 'link'
+// Эта функция создает новую карточку путем клонирования шаблона template. Имеет на вход объект 'card'
 function createNewCard(card) {
   // Здесь мы клонируем DOM-элемент шаблона карточки
   const newCard = templateCard.cloneNode(true);
@@ -16,21 +18,24 @@ function createNewCard(card) {
   const cardImage = newCard.querySelector(".card__image");
   // Ссылка на DOM-элемент поля для названия изображения
   const cardTitle = newCard.querySelector(".card__title");
-
+  const likesCount = newCard.querySelector('.card__likes-count');
   const likeButton = newCard.querySelector('.card__like');
   const deleteButton = newCard.querySelector('.card__delete-button');
-
   // Для тэга img карточки указываем атрибут src и присваиваем ему значение из параметра 'link'
   cardImage.src = card.link;
   // Для тэга img карточки указываем атрибут alt и присваиваем ему значение из параметра 'name'
   cardImage.alt = card.name;
   // Полю названия изображения присваиваем значение из параметра 'name'
   cardTitle.textContent = card.name;
-
+  likesCount.innerHTML = card.likes.length;
   // Если нажали на кнопку "like"
   likeButton.addEventListener('click', () => { handleLikeButtonClick(likeButton) });
   // Если нажали на кнопку удаления
-  deleteButton.addEventListener('click', () => { handleTrashButtonClick(deleteButton) });
+  if (card.owner._id === profileObject._id) {
+    deleteButton.addEventListener('click', () => { handleTrashButtonClick(deleteButton, card._id) });
+  } else {
+    deleteButton.remove();
+  }
   // Если нажали на картинку карточки
   cardImage.addEventListener('click', () => { handleOverlayImageClick(cardImage.src, cardImage.alt) });
   return newCard;
@@ -46,7 +51,8 @@ function handleLikeButtonClick(likeButton) {
 
 // Данная функция удаляет карточку со страницы
 // trashButton - это ссылка на DOM элемент кнопки удаления карточки
-function handleTrashButtonClick(trashButton) {
+async function handleTrashButtonClick(trashButton, cardID) {
+  await deleteServerCard(cardID);
   trashButton.closest('.card').remove();
 }
 
