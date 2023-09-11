@@ -100,3 +100,35 @@ export async function getServerCards() {
       console.log(error.message);
     });
 }
+
+export async function putServerLike(cardID) {
+  return fetch(`https://nomoreparties.co/v1/wbf-cohort-12/cards/likes/${cardID}`, {
+    method: 'PUT',
+    headers: headers,
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Error: ${response.status}`);
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+}
+
+export async function deleteServerLike(cardID) {
+  return fetch(`https://nomoreparties.co/v1/wbf-cohort-12/cards/likes/${cardID}`, {
+    method: 'DELETE',
+    headers: headers,
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Error: ${response.status}`);
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+}

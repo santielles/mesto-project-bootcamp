@@ -1,5 +1,5 @@
 import { profileObject } from './../index.js';
-import { deleteServerCard } from './api.js';
+import { deleteServerCard, deleteServerLike, putServerLike } from './api.js';
 import { handleOverlayImageClick } from './modal.js';
 
 // Ссылка на DOM элемент 'cards'
@@ -27,9 +27,9 @@ function createNewCard(card) {
   cardImage.alt = card.name;
   // Полю названия изображения присваиваем значение из параметра 'name'
   cardTitle.textContent = card.name;
-  likesCount.innerHTML = card.likes.length;
+  likesCount.textContent = card.likes.length;
   // Если нажали на кнопку "like"
-  likeButton.addEventListener('click', () => { handleLikeButtonClick(likeButton) });
+  likeButton.addEventListener('click', () => { handleLikeButtonClick(likeButton, card._id, likesCount) });
   // Если нажали на кнопку удаления
   if (card.owner._id === profileObject._id) {
     deleteButton.addEventListener('click', () => { handleTrashButtonClick(deleteButton, card._id) });
@@ -45,9 +45,17 @@ function createNewCard(card) {
 
 // Данная функция проставляет или убирает лайк
 // likeButton - это ссылка на DOM элемент кнопки лайка
-function handleLikeButtonClick(likeButton) {
+async function handleLikeButtonClick(likeButton, cardID, cardsLikeSpan) {
+  let likesCount;
+  if (likeButton.classList.contains('card__like_mode-active')) {
+    likesCount = await deleteServerLike(cardID);
+  } else {
+    likesCount = await putServerLike(cardID);
+  }
+  cardsLikeSpan.textContent = likesCount.likes.length;
   likeButton.classList.toggle('card__like_mode-active');
 }
+
 
 // Данная функция удаляет карточку со страницы
 // trashButton - это ссылка на DOM элемент кнопки удаления карточки
