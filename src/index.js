@@ -3,37 +3,15 @@ import './pages/index.css';
 import * as card from './components/card.js';
 import * as modal from './components/modal.js';
 import * as validate from './components/validate.js';
+import { getServerCards, getServerProfile, setServerProfile, createServerCard, uploadAvatar } from './components/api.js';
 
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
+const profileObject = await getServerProfile();
+const serverCards = await getServerCards();
 // Profile
 // Ссылка на DOM элемент профиля
 const profile = document.querySelector('.profile');
+// Ссылка на DOM элемент для отображения аватара в профиле
+const profileAvatar = profile.querySelector('.profile__avatar');
 // Ссылка на DOM элемент для отображения имени в профиле
 const profileName = profile.querySelector('.profile__name');
 // Ссылка на DOM элемент для отображения описания в профиле
@@ -42,6 +20,11 @@ const profileAbout = profile.querySelector('.profile__about');
 const editProfileButton = profile.querySelector('.profile__edit-button');
 // Ссылка на DOM элемент кнопки для добавления новой карточки
 const newCardButton = profile.querySelector('.profile__add-button');
+
+const editAvatarProfile = document.getElementById('edit-profile-avatar');
+const profileAvatarPencil = profile.querySelector('.profile__avatar-pencil');
+const editAvatarProfileForm = document.forms.editProfileAvatarForm;
+const editAvatarProfileLink = editAvatarProfileForm.elements.editProfileAvatarLink;
 
 // Profile Popup
 // Ссылка на DOM элемент 'edit-profile-popup' для редактирования профиля
@@ -77,9 +60,12 @@ const validationSettings = {
 Она обновляет имя и описание в профиле и закрывает popup
 Параметр 'event' содержит событие, например, событие 'нажатия на кнопку' или 'отправки формы'
 */
-function handleProfileEditFormSubmit(event) {
+async function handleProfileEditFormSubmit(event) {
   // Отменяем стандартное действие браузера по отправке формы, чтобы предотвратить перезагрузку страницы
   event.preventDefault();
+  // В нашу функцйю передаём profileEditName.value что значит взять значение
+  // из profileEditName (ссылка на DOM элемент в попапе редактирования имени)
+  await setServerProfile({ name: profileEditName.value, about: profileEditJob.value })
   // Обновляем имя профиля на основе введенного значения в форме
   profileName.textContent = profileEditName.value;
   // Обновляем описание профиля на основе введенного значения в форме
@@ -88,24 +74,41 @@ function handleProfileEditFormSubmit(event) {
   modal.closePopup(profilePopup);
 }
 
+async function handleProfileAvatarEditFormSubmit(event) {
+  // Отменяем стандартное действие браузера по отправке формы, чтобы предотвратить перезагрузку страницы
+  event.preventDefault();
+  await uploadAvatar(editAvatarProfileLink.value)
+  profileAvatar.src = editAvatarProfileLink.value;
+  modal.closePopup(editAvatarProfile);
+}
+
 /*
 Эта функция обрабатывает нажатие на кнопку 'Создать' в форме добавления новой карточки
 Она берёт имя карточки и ссылку на картинку, добавляет карточку и закрывает popup
 Параметр 'event' содержит событие, например, событие 'нажатия на кнопку' или 'отправки формы'
 */
-function handleNewCardFormSubmit(event) {
+async function handleNewCardFormSubmit(event) {
   // Отменяем стандартное действие браузера по отправке формы, чтобы предотвратить перезагрузку страницы
   event.preventDefault();
   const cardObject = {
     name: newCardAddTitle.value,
     link: newCardAddLink.value
   }
+  const cardServerObject = await createServerCard(cardObject);
   // Создаём новую карточку с помощью функции 'createNewCard'
-  const newCard = card.createNewCard(cardObject);
+  const newCard = card.createNewCard(cardServerObject);
   // Добавляем созданную карточку на страницу
   card.addNewCard(newCard);
   // Закрываем popup
   modal.closePopup(newCardPopup);
+}
+
+function setLocalProfile(profile) {
+  // profileName это наша константа (ссылка на DOM элемент), textContent - считываем текстовое содержимое элемента
+  // about это свойство объекта(смотри выше)
+  profileName.textContent = profile.name;
+  profileAbout.textContent = profile.about;
+  profileAvatar.src = profile.avatar;
 }
 
 // Добавляем обработчик события 'click' для кнопки редактирования профиля
@@ -128,17 +131,19 @@ newCardButton.addEventListener('click', () => {
   modal.openPopup(newCardPopup);
 });
 
+// Добавляем обработчик события 'click' для кнопки открытия редактирования аватара
+profileAvatarPencil.addEventListener('click', () => {
+  const avatarButton = editAvatarProfileForm.querySelector('.popup__button');
+  validate.disableSubmitButton(avatarButton)
+  modal.openPopup(editAvatarProfile);
+});
+
+editAvatarProfileForm.addEventListener('submit', (event) => handleProfileAvatarEditFormSubmit(event));
 // Добавляем обработчик события 'submit' для формы редактирования профиля
 // При отправке формы будет вызвана функция handleProfileEditFormSubmit, в которую как аргумент будет передано событие 'submit'
 profileEditForm.addEventListener('submit', (event) => handleProfileEditFormSubmit(event));
 
 newCardForm.addEventListener('submit', (event) => handleNewCardFormSubmit(event));
-
-// Создаём новые карточки из заданного массива initialCards
-initialCards.forEach(cardElement => {
-  const newCard = card.createNewCard(cardElement);
-  card.addNewCard(newCard);
-});
 
 closeButtonList.forEach(closeButton => {
   const popup = closeButton.closest('.popup');
@@ -155,4 +160,14 @@ closeButtonList.forEach(closeButton => {
   });
 });
 
+setLocalProfile(profileObject);
+
+// Создаём новые карточки
+serverCards.forEach(cardElement => {
+  const newCard = card.createNewCard(cardElement);
+  card.addNewCard(newCard);
+});
+
 validate.enableFormsValidation(validationSettings);
+
+export { profileObject };
