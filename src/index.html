@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <!-- Head -->
+<!-- https://i.ibb.co/rb28Xzk/cat.jpg -->
 
 <head>
   <meta charset="UTF-8">
@@ -21,7 +22,9 @@
       <!-- Profile -->
 
       <section class="profile" aria-label="Profile">
-        <img class="profile__avatar" src="" alt="Аватар профайла">
+        <div class="profile__avatar-pencil">
+          <img class="profile__avatar" src="" alt="Аватар профайла">
+        </div>
         <div class="profile__info">
           <div class="profile__info-wrapped">
             <h1 class="profile__name"></h1>
@@ -64,7 +67,7 @@
       <div class="popup__container">
         <button type="button" class="popup__close-button"></button>
         <h2 class="popup__header">Обновить аватар</h2>
-        <form class="popup__form" name="editProfileAvatar" novalidate>
+        <form class="popup__form" name="editProfileAvatarForm" novalidate>
           <input class="popup__input" name="editProfileAvatarLink" id='edit-avatar-input-link' type="url" placeholder=""
             required>
           <span class="popup__input-error" id="error-edit-avatar-input-link"></span>

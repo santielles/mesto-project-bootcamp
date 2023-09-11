@@ -4,21 +4,15 @@
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  cursor: pointer;
-}
-
-.profile__avatar::after {
-  width: 100%;
-  flex-shrink: 0;
-  display: block;
-  background-position: bottom;
-  background-size: 26px;
-  background-image: url('../../../images/Pen.svg');
-  background-repeat: no-repeat;
-  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .profile__avatar:hover {
-  opacity: 0.8;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 26px;
+  opacity: 0.5;
   transition: 1s;
+  flex-shrink: 0;
+  display: block;
+  cursor: pointer;
 }

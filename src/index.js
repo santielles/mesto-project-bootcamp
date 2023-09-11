@@ -3,11 +3,10 @@ import './pages/index.css';
 import * as card from './components/card.js';
 import * as modal from './components/modal.js';
 import * as validate from './components/validate.js';
-import { getServerCards, getServerProfile, setServerProfile, createServerCard } from './components/api.js';
+import { getServerCards, getServerProfile, setServerProfile, createServerCard, uploadAvatar } from './components/api.js';
 
 const profileObject = await getServerProfile();
 const serverCards = await getServerCards();
-console.log(serverCards)
 // Profile
 // Ссылка на DOM элемент профиля
 const profile = document.querySelector('.profile');
@@ -21,6 +20,11 @@ const profileAbout = profile.querySelector('.profile__about');
 const editProfileButton = profile.querySelector('.profile__edit-button');
 // Ссылка на DOM элемент кнопки для добавления новой карточки
 const newCardButton = profile.querySelector('.profile__add-button');
+
+const editAvatarProfile = document.getElementById('edit-profile-avatar');
+const profileAvatarPencil = profile.querySelector('.profile__avatar-pencil');
+const editAvatarProfileForm = document.forms.editProfileAvatarForm;
+const editAvatarProfileLink = editAvatarProfileForm.elements.editProfileAvatarLink;
 
 // Profile Popup
 // Ссылка на DOM элемент 'edit-profile-popup' для редактирования профиля
@@ -61,13 +65,21 @@ async function handleProfileEditFormSubmit(event) {
   event.preventDefault();
   // В нашу функцйю передаём profileEditName.value что значит взять значение
   // из profileEditName (ссылка на DOM элемент в попапе редактирования имени)
-  setServerProfile({ name: profileEditName.value, about: profileEditJob.value })
+  await setServerProfile({ name: profileEditName.value, about: profileEditJob.value })
   // Обновляем имя профиля на основе введенного значения в форме
   profileName.textContent = profileEditName.value;
   // Обновляем описание профиля на основе введенного значения в форме
   profileAbout.textContent = profileEditJob.value;
   // Закрываем popup
   modal.closePopup(profilePopup);
+}
+
+async function handleProfileAvatarEditFormSubmit(event) {
+  // Отменяем стандартное действие браузера по отправке формы, чтобы предотвратить перезагрузку страницы
+  event.preventDefault();
+  await uploadAvatar(editAvatarProfileLink.value)
+  profileAvatar.src = editAvatarProfileLink.value;
+  modal.closePopup(editAvatarProfile);
 }
 
 /*
@@ -99,7 +111,6 @@ function setLocalProfile(profile) {
   profileAvatar.src = profile.avatar;
 }
 
-
 // Добавляем обработчик события 'click' для кнопки редактирования профиля
 editProfileButton.addEventListener('click', () => {
   // Заполняем поле для имени в форме редактирования профиля текущим значением из профиля
@@ -120,6 +131,14 @@ newCardButton.addEventListener('click', () => {
   modal.openPopup(newCardPopup);
 });
 
+// Добавляем обработчик события 'click' для кнопки открытия редактирования аватара
+profileAvatarPencil.addEventListener('click', () => {
+  const avatarButton = editAvatarProfileForm.querySelector('.popup__button');
+  validate.disableSubmitButton(avatarButton)
+  modal.openPopup(editAvatarProfile);
+});
+
+editAvatarProfileForm.addEventListener('submit', (event) => handleProfileAvatarEditFormSubmit(event));
 // Добавляем обработчик события 'submit' для формы редактирования профиля
 // При отправке формы будет вызвана функция handleProfileEditFormSubmit, в которую как аргумент будет передано событие 'submit'
 profileEditForm.addEventListener('submit', (event) => handleProfileEditFormSubmit(event));
