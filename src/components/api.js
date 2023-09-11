@@ -50,7 +50,7 @@ export async function setServerProfile(profile) {
 }
 
 export async function createServerCard(card) {
-  fetch('https://nomoreparties.co/v1/wbf-cohort-12/cards', {
+  return fetch('https://nomoreparties.co/v1/wbf-cohort-12/cards', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify({
@@ -133,12 +133,12 @@ export async function deleteServerLike(cardID) {
     });
 }
 
-export async function uploadAvatar(profile) {
+export async function uploadAvatar(avatar) {
   return fetch('https://nomoreparties.co/v1/wbf-cohort-12/users/me/avatar', {
     method: 'PATCH',
     headers: headers,
     body: JSON.stringify({
-      avatar: profile.avatar,
+      avatar: avatar,
     })
   })
     .then(response => {

@@ -27,6 +27,9 @@ function createNewCard(card) {
   cardImage.alt = card.name;
   // Полю названия изображения присваиваем значение из параметра 'name'
   cardTitle.textContent = card.name;
+  if (card.likes.some(like => like._id === profileObject._id)) {
+    likeButton.classList.toggle('card__like_mode-active');
+  };
   likesCount.textContent = card.likes.length;
   // Если нажали на кнопку "like"
   likeButton.addEventListener('click', () => { handleLikeButtonClick(likeButton, card._id, likesCount) });

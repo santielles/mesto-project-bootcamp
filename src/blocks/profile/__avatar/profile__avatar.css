@@ -10,8 +10,7 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: 26px;
-  background-color: rgba(0, 0, 0, .8);
-  opacity: 0.6;
+  opacity: 0.5;
   transition: 1s;
   flex-shrink: 0;
   display: block;
