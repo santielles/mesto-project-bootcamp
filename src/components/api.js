@@ -132,3 +132,22 @@ export async function deleteServerLike(cardID) {
       console.log(error.message);
     });
 }
+
+export async function uploadAvatar(profile) {
+  return fetch('https://nomoreparties.co/v1/wbf-cohort-12/users/me/avatar', {
+    method: 'PATCH',
+    headers: headers,
+    body: JSON.stringify({
+      avatar: profile.avatar,
+    })
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Error: ${response.status}`);
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+}
