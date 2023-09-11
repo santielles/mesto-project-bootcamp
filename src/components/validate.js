@@ -36,8 +36,6 @@ function toggleSubmitButton(isFormValid, buttonSubmit) {
   }
 }
 
-
-
 function setValidationEventListeners(formElement, settings) {
   const buttonSubmit = formElement.querySelector(settings.buttonSelector);
   const inputList = formElement.querySelectorAll(settings.inputSelector);
