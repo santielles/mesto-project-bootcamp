@@ -1,4 +1,3 @@
-import { profileObject } from './../index.js';
 import { deleteServerCard, deleteServerLike, putServerLike } from './api.js';
 import { handleOverlayImageClick } from './modal.js';
 
@@ -11,7 +10,7 @@ const templateCard = template.content.querySelector('.card');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Эта функция создает новую карточку путем клонирования шаблона template. Имеет на вход объект 'card'
-function createNewCard(card) {
+function createNewCard(card, userId) {
   // Здесь мы клонируем DOM-элемент шаблона карточки
   const newCard = templateCard.cloneNode(true);
   // Ссылка на DOM-элемент поля для ссылки на изображение
@@ -27,14 +26,14 @@ function createNewCard(card) {
   cardImage.alt = card.name;
   // Полю названия изображения присваиваем значение из параметра 'name'
   cardTitle.textContent = card.name;
-  if (card.likes.some(like => like._id === profileObject._id)) {
+  if (card.likes.some(like => like._id === userId)) {
     likeButton.classList.toggle('card__like_mode-active');
   };
   likesCount.textContent = card.likes.length;
   // Если нажали на кнопку "like"
   likeButton.addEventListener('click', () => { handleLikeButtonClick(likeButton, card._id, likesCount) });
   // Если нажали на кнопку удаления
-  if (card.owner._id === profileObject._id) {
+  if (card.owner._id === userId) {
     deleteButton.addEventListener('click', () => { handleTrashButtonClick(deleteButton, card._id) });
   } else {
     deleteButton.remove();

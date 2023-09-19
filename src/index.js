@@ -5,8 +5,21 @@ import * as modal from './components/modal.js';
 import * as validate from './components/validate.js';
 import { getServerCards, getServerProfile, setServerProfile, createServerCard, uploadAvatar } from './components/api.js';
 
-const profileObject = await getServerProfile();
-const serverCards = await getServerCards();
+
+// Вместо 
+// const profileObject = await getServerProfile();
+// const serverCards = await getServerCards();
+Promise.all([getServerProfile(), getServerCards()])
+  .then(([profileObject, serverCards]) => {
+    setLocalProfile(profileObject);
+
+    // Создаём новые карточки
+    serverCards.forEach((cardElement) => {
+      const newCard = card.createNewCard(cardElement, profileObject._id);
+      card.addNewCard(newCard);
+    });
+  })
+
 // Profile
 // Ссылка на DOM элемент профиля
 const profile = document.querySelector('.profile');
@@ -63,23 +76,34 @@ const validationSettings = {
 async function handleProfileEditFormSubmit(event) {
   // Отменяем стандартное действие браузера по отправке формы, чтобы предотвратить перезагрузку страницы
   event.preventDefault();
+  event.submitter.textContent = 'Сохранение...'
   // В нашу функцйю передаём profileEditName.value что значит взять значение
   // из profileEditName (ссылка на DOM элемент в попапе редактирования имени)
-  await setServerProfile({ name: profileEditName.value, about: profileEditJob.value })
-  // Обновляем имя профиля на основе введенного значения в форме
-  profileName.textContent = profileEditName.value;
-  // Обновляем описание профиля на основе введенного значения в форме
-  profileAbout.textContent = profileEditJob.value;
-  // Закрываем popup
-  modal.closePopup(profilePopup);
+  try {
+    const res = await setServerProfile({
+      name: profileEditName.value,
+      about: profileEditJob.value
+    })
+    // Обновляем имя профиля на основе введенного значения в форме
+    profileName.textContent = res.name;
+    // Обновляем описание профиля на основе введенного значения в форме
+    profileAbout.textContent = res.about;
+    // Закрываем popup
+    modal.closePopup(profilePopup);
+  } catch (err) {
+    console.log(err)
+  }
+  event.submitter.textContent = 'Сохранить'
 }
 
 async function handleProfileAvatarEditFormSubmit(event) {
   // Отменяем стандартное действие браузера по отправке формы, чтобы предотвратить перезагрузку страницы
   event.preventDefault();
+  event.submitter.textContent = 'Сохранение...'
   await uploadAvatar(editAvatarProfileLink.value)
   profileAvatar.src = editAvatarProfileLink.value;
   modal.closePopup(editAvatarProfile);
+  event.submitter.textContent = 'Сохранить'
 }
 
 /*
@@ -90,17 +114,19 @@ async function handleProfileAvatarEditFormSubmit(event) {
 async function handleNewCardFormSubmit(event) {
   // Отменяем стандартное действие браузера по отправке формы, чтобы предотвратить перезагрузку страницы
   event.preventDefault();
+  event.submitter.textContent = 'Сохранение...'
   const cardObject = {
     name: newCardAddTitle.value,
     link: newCardAddLink.value
   }
   const cardServerObject = await createServerCard(cardObject);
   // Создаём новую карточку с помощью функции 'createNewCard'
-  const newCard = card.createNewCard(cardServerObject);
+  const newCard = card.createNewCard(cardServerObject, cardServerObject.owner._id);
   // Добавляем созданную карточку на страницу
   card.addNewCard(newCard);
   // Закрываем popup
   modal.closePopup(newCardPopup);
+  event.submitter.textContent = 'Сохранить'
 }
 
 function setLocalProfile(profile) {
@@ -160,14 +186,4 @@ closeButtonList.forEach(closeButton => {
   });
 });
 
-setLocalProfile(profileObject);
-
-// Создаём новые карточки
-serverCards.forEach(cardElement => {
-  const newCard = card.createNewCard(cardElement);
-  card.addNewCard(newCard);
-});
-
 validate.enableFormsValidation(validationSettings);
-
-export { profileObject };
