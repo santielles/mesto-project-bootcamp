@@ -19,6 +19,9 @@ Promise.all([getServerProfile(), getServerCards()])
       card.addNewCard(newCard);
     });
   })
+  .catch((error) => {
+    console.log(error.message);
+  });
 
 // Profile
 // Ссылка на DOM элемент профиля
@@ -90,8 +93,8 @@ async function handleProfileEditFormSubmit(event) {
     profileAbout.textContent = res.about;
     // Закрываем popup
     modal.closePopup(profilePopup);
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+    console.log(error.message)
   }
   event.submitter.textContent = 'Сохранить'
 }
@@ -100,9 +103,13 @@ async function handleProfileAvatarEditFormSubmit(event) {
   // Отменяем стандартное действие браузера по отправке формы, чтобы предотвратить перезагрузку страницы
   event.preventDefault();
   event.submitter.textContent = 'Сохранение...'
-  await uploadAvatar(editAvatarProfileLink.value)
-  profileAvatar.src = editAvatarProfileLink.value;
-  modal.closePopup(editAvatarProfile);
+  try {
+    await uploadAvatar(editAvatarProfileLink.value)
+    profileAvatar.src = editAvatarProfileLink.value;
+    modal.closePopup(editAvatarProfile);
+  } catch (error) {
+    console.log(error.message)
+  }
   event.submitter.textContent = 'Сохранить'
 }
 
@@ -115,18 +122,22 @@ async function handleNewCardFormSubmit(event) {
   // Отменяем стандартное действие браузера по отправке формы, чтобы предотвратить перезагрузку страницы
   event.preventDefault();
   event.submitter.textContent = 'Сохранение...'
-  const cardObject = {
-    name: newCardAddTitle.value,
-    link: newCardAddLink.value
+  try {
+    const cardObject = {
+      name: newCardAddTitle.value,
+      link: newCardAddLink.value
+    }
+    const cardServerObject = await createServerCard(cardObject);
+    // Создаём новую карточку с помощью функции 'createNewCard'
+    const newCard = card.createNewCard(cardServerObject, cardServerObject.owner._id);
+    // Добавляем созданную карточку на страницу
+    card.addNewCard(newCard);
+    // Закрываем popup
+    modal.closePopup(newCardPopup);
+  } catch (error) {
+    console.log(error.message)
   }
-  const cardServerObject = await createServerCard(cardObject);
-  // Создаём новую карточку с помощью функции 'createNewCard'
-  const newCard = card.createNewCard(cardServerObject, cardServerObject.owner._id);
-  // Добавляем созданную карточку на страницу
-  card.addNewCard(newCard);
-  // Закрываем popup
-  modal.closePopup(newCardPopup);
-  event.submitter.textContent = 'Сохранить'
+  event.submitter.textContent = 'Создать'
 }
 
 function setLocalProfile(profile) {
