@@ -48,22 +48,32 @@ function createNewCard(card, userId) {
 // Данная функция проставляет или убирает лайк
 // likeButton - это ссылка на DOM элемент кнопки лайка
 async function handleLikeButtonClick(likeButton, cardID, cardsLikeSpan) {
-  let likesCount;
-  if (likeButton.classList.contains('card__like_mode-active')) {
-    likesCount = await deleteServerLike(cardID);
-  } else {
-    likesCount = await putServerLike(cardID);
+  try {
+    let likesCount;
+    if (likeButton.classList.contains('card__like_mode-active')) {
+      likesCount = await deleteServerLike(cardID);
+    } else {
+      likesCount = await putServerLike(cardID);
+    }
+    cardsLikeSpan.textContent = likesCount.likes.length;
+    likeButton.classList.toggle('card__like_mode-active');
   }
-  cardsLikeSpan.textContent = likesCount.likes.length;
-  likeButton.classList.toggle('card__like_mode-active');
+  catch (error) {
+    console.log(error.message)
+  }
 }
+
 
 
 // Данная функция удаляет карточку со страницы
 // trashButton - это ссылка на DOM элемент кнопки удаления карточки
 async function handleTrashButtonClick(trashButton, cardID) {
-  await deleteServerCard(cardID);
-  trashButton.closest('.card').remove();
+  try {
+    await deleteServerCard(cardID);
+    trashButton.closest('.card').remove();
+  } catch (error) {
+    console.log(error.message)
+  }
 }
 
 /*
